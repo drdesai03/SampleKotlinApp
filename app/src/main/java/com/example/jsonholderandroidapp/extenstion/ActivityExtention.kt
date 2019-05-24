@@ -9,9 +9,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.example.jsonholderandroidapp.vm.CustomViewModelFactory
-import dagger.android.AndroidInjection
-import dagger.android.support.AndroidSupportInjection
 
 fun AppCompatActivity.replaceFragment(containerId: Int, fragment: Fragment) {
     supportFragmentManager.transact(fragment::class.simpleName) { replace(containerId, fragment) }

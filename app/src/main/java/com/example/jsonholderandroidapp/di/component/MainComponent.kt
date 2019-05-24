@@ -2,8 +2,8 @@ package com.example.jsonholderandroidapp.di.component
 
 import android.app.Application
 import com.example.jsonholderandroidapp.MainApplication
-import com.example.jsonholderandroidapp.di.module.MainModule
 import com.example.jsonholderandroidapp.di.module.ActivityModule
+import com.example.jsonholderandroidapp.di.module.MainModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule

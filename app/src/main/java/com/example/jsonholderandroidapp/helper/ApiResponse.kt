@@ -6,7 +6,7 @@ sealed class ApiResponse<T> {
 
     companion object {
 
-        fun <T> create(error: Throwable) : ApiErrorResponse<T> {
+        fun <T> create(error: Throwable): ApiErrorResponse<T> {
             return ApiErrorResponse(error.message ?: "Unknown Error")
         }
 
@@ -28,7 +28,7 @@ sealed class ApiResponse<T> {
                 } else {
                     msg
                 }
-                ApiEmptyResponse()
+                ApiErrorResponse(errorMessage)
             }
         }
     }

@@ -10,8 +10,6 @@ import com.example.jsonholderandroidapp.ui.album.fragment.AlbumFragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import javax.inject.Inject
 
 

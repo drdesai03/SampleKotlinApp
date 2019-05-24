@@ -4,8 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.util.Log
 import com.example.jsonholderandroidapp.di.AppInjector
-import dagger.android.HasActivityInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasActivityInjector
 import javax.inject.Inject
 
 

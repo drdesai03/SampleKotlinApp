@@ -20,7 +20,7 @@ class AlbumServiceTest {
 
     @Before
     fun createAlbumService() {
-        mockWebServer =
+        mockWebServer = MockWebServer()
     }
 
     @After

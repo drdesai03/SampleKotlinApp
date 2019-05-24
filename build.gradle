@@ -26,3 +26,18 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ ext {
+     lifecycle = '1.1.1'
+     lifecycleExtention = '2.0.0'
+     arch_core = '2.0.1'
+
+     room = "2.1.0-beta01"
+
+     appCompatSupport = "1.0.0"
+     square = "2.3.0"
+
+     dagger = "2.16"
+
+     mockwebserver = "3.8.1"
+     mockito = '2.25.0'
+ }

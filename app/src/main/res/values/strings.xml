@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">JsonHolderAndroidApp</string>
+    <string name="app_name">SampleAndroidApp</string>
+
+    <string name="album_title">Album List</string>
+    <string name="loading_error">Something went wrong\nPlease try again</string>
+
+    <string name="lbl_retry">Retry</string>
 </resources>

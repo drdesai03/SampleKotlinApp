@@ -1,25 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
 
+    <data>
+        <variable name="responseResource" type="com.example.jsonholderandroidapp.helper.ResponseResources"/>
+        <variable name="status" type="com.example.jsonholderandroidapp.utils.Status"/>
+        <import type="android.view.View"/>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.Toolbar
-                android:layout_width="0dp"
-                android:layout_height="56dp" android:background="@color/colorPrimary"
-                android:id="@+id/toolbar"
+        <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pb_loading"
+                app:layout_constraintEnd_toEndOf="@+id/recyclerView"
+                app:layout_constraintStart_toStartOf="@+id/recyclerView"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="@+id/recyclerView"
+                tools:visibility="gone"
+                android:visibility="@{responseResource.status == status.LOADING ? View.VISIBLE : View.GONE}"/>
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-        />
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="@{responseResource.status == status.ERROR ? View.VISIBLE : View.GONE}">
+
+            <ImageView
+                    android:id="@+id/img_error"
+                    android:layout_width="@dimen/space_40_dp"
+                    android:layout_height="@dimen/space_40_dp"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/ic_error"/>
+
+            <TextView
+                    android:id="@+id/txt_error_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_error"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/color_darker_gray"
+                    android:text="@string/loading_error"/>
+
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/space_16_dp"
+                    android:layout_below="@+id/txt_error_message"
+                    android:text="@string/lbl_retry"
+                    android:id="@+id/btn_retry"/>
+        </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="0dp"
                 android:layout_height="0dp" android:id="@+id/recyclerView" app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        />
+                app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="1.0"
+                android:visibility="@{responseResource.status == status.ERROR ? View.GONE : View.VISIBLE}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

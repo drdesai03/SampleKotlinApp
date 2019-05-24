@@ -1,5 +1,7 @@
 package com.example.jsonholderandroidapp.extenstion
 
+import androidx.annotation.IdRes
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -20,6 +22,13 @@ private inline fun FragmentManager.transact(fragmentName: String?, action: Fragm
         action()
         addToBackStack(fragmentName)
     }.commit()
+}
+
+fun AppCompatActivity.setupActionBar(@IdRes toolbarId: Int, action: ActionBar.() -> Unit) {
+    setSupportActionBar(findViewById(toolbarId))
+    supportActionBar?.run {
+        action()
+    }
 }
 
 fun <T : ViewModel> Fragment.createViewModel(factory: ViewModelProvider.Factory, viewModelClass: Class<T>) =

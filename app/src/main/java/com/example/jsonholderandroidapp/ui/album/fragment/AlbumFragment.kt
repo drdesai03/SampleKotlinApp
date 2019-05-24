@@ -32,15 +32,22 @@ class AlbumFragment private constructor() : BaseFragment<FragmentAlbumListBindin
             false
         )
         adapter = AlbumRowAdapter(emptyList()) { albumEntity ->
-            Toast.makeText(context, "Item Clickec " + albumEntity.title, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, albumEntity.title, Toast.LENGTH_SHORT).show()
         }
         val itemDecorator = DividerItemDecoration(context, LinearLayout.VERTICAL)
         binding.recyclerView.addItemDecoration(itemDecorator)
         binding.recyclerView.adapter = adapter
 
+        loadResult()
+
+        binding.btnRetry.setOnClickListener { loadResult() }
+    }
+
+    private fun loadResult() {
         viewModel().getResult().observe(this, Observer { result ->
-            if (result.status == Status.SUCCESS) {
-                adapter.updateList(result.data!!)
+            binding.responseResource = result
+            if (result.status == Status.SUCCESS || result.status == Status.LOADING) {
+                adapter.updateList(result.data)
             }
         })
     }

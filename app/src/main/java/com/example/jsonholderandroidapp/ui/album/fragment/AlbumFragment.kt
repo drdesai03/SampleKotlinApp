@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.example.jsonholderandroidapp.R
 import com.example.jsonholderandroidapp.base.fragment.BaseFragment
 import com.example.jsonholderandroidapp.databinding.FragmentAlbumListBinding
 import com.example.jsonholderandroidapp.extenstion.createViewModel
+import com.example.jsonholderandroidapp.extenstion.replaceFragment
 import com.example.jsonholderandroidapp.ui.album.adapter.AlbumRowAdapter
 import com.example.jsonholderandroidapp.utils.Status
 import com.example.jsonholderandroidapp.vm.album.AlbumViewModel
@@ -32,6 +34,10 @@ class AlbumFragment private constructor() : BaseFragment<FragmentAlbumListBindin
         )
         adapter = AlbumRowAdapter(emptyList()) { albumEntity ->
             Toast.makeText(context, albumEntity.title, Toast.LENGTH_SHORT).show()
+            (activity as AppCompatActivity).replaceFragment(
+                R.id.container,
+                AlbumDetailsFragment.newInstance(albumEntity.id)
+            )
         }
         val itemDecorator = DividerItemDecoration(context, LinearLayout.VERTICAL)
         binding.recyclerView.addItemDecoration(itemDecorator)

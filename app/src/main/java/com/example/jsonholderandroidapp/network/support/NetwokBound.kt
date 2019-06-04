@@ -7,6 +7,7 @@ import com.example.jsonholderandroidapp.helper.ApiEmptyResponse
 import com.example.jsonholderandroidapp.helper.ApiErrorResponse
 import com.example.jsonholderandroidapp.helper.ApiSuccessResponse
 import com.example.jsonholderandroidapp.helper.ResponseResources
+import com.example.jsonholderandroidapp.utils.Status
 
 class NetwokBound<REQ, RES> @MainThread private constructor(
     private val requestBuilder: RequestBuilder<RES>,
@@ -30,35 +31,47 @@ class NetwokBound<REQ, RES> @MainThread private constructor(
 
     private fun getResponse() {
         result.value = ResponseResources.loading(null)
-        val dbSources = requestBuilder.dbSource!!
-        result.addSource(dbSources) { data ->
-            result.removeSource(dbSources)
-            if (requestBuilder.rateLimiter.shouldFetch(requestBuilder.keyword)) {
-                fetchFromNetwork()
-            } else {
-                result.addSource(dbSources) { newData -> setData(ResponseResources.success(newData)) }
+        requestBuilder.dbSource?.let {
+            val dbSources = requestBuilder.dbSource
+            result.addSource(dbSources) { data ->
+                result.removeSource(dbSources)
+                if (requestBuilder.rateLimiter.shouldFetch(requestBuilder.keyword)) {
+                    fetchFromNetwork()
+                } else {
+                    result.addSource(dbSources) { newData -> setData(ResponseResources.success(newData)) }
+                }
             }
-        }
+        } ?: run { fetchFromNetwork() }
     }
 
     private fun fetchFromNetwork() {
-        val apiRes = requestBuilder.apiResponse!!;
+        val apiRes = requestBuilder.apiResponse!!
 
-        result.addSource(requestBuilder.dbSource!!) { data ->
-            setData(ResponseResources.loading(data))
+        requestBuilder.dbSource?.let {
+            val dbSources = requestBuilder.dbSource
+            result.addSource(dbSources) { data ->
+                setData(ResponseResources.loading(data))
+            }
         }
 
         result.addSource(apiRes) { response ->
-            result.removeSource(requestBuilder.dbSource!!)
+            requestBuilder.dbSource?.let { result.removeSource(requestBuilder.dbSource) }
             result.removeSource(apiRes)
 
             when (response) {
                 is ApiSuccessResponse -> {
-                    requestBuilder.executors.diskIO().execute {
-                        saveResultCallBack!!.saveResult(response.body)
+                    saveResultCallBack?.let {
+                        requestBuilder.executors.diskIO().execute {
+                            saveResultCallBack.saveResult(response.body)
+                        }
+                    } ?: run {
                         requestBuilder.executors.mainThread().execute {
-                            result.addSource(requestBuilder.dbSource!!) { result ->
-                                setData(ResponseResources.success(result))
+                            requestBuilder.dbSource?.let {
+                                result.addSource(requestBuilder.dbSource!!) { result ->
+                                    setData(ResponseResources.success(result))
+                                }
+                            } ?: run {
+                                setData(ResponseResources.success(response.body))
                             }
                         }
                     }
@@ -72,14 +85,24 @@ class NetwokBound<REQ, RES> @MainThread private constructor(
                 }
                 is ApiErrorResponse -> {
                     //TODO : Reset Ratelimiter
-                    result.addSource(requestBuilder.dbSource!!) { result ->
+                    requestBuilder.dbSource?.let {
+                        result.addSource(requestBuilder.dbSource!!) { result ->
+                            setData(
+                                ResponseResources.error(
+                                    response.errorMessage,
+                                    result
+                                )
+                            )
+                        }
+                    } ?: run {
                         setData(
                             ResponseResources.error(
                                 response.errorMessage,
-                                result
+                                null
                             )
                         )
                     }
+
                 }
             }
         }

@@ -41,4 +41,15 @@ class AlbumRepository @Inject constructor(
                 })
         return networkBuilder.asLiveData()
     }
+
+    fun fetchSingleResponse(albumId : Int) : LiveData<ResponseResources<AlbumEntity>> {
+        val requestBuilder = RequestBuilder(
+            keyword = "albumDetails $albumId",
+            executors = executors,
+            apiResponse = albumService.getAlbumDetails(albumId)
+        )
+
+        val networkBuilder = NetwokBound.createNetworkBound<AlbumEntity, AlbumEntity>(requestBuilder)
+        return networkBuilder.asLiveData()
+    }
 }

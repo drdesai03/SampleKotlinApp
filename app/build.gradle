@@ -29,6 +29,16 @@ android {
         enabled = true
     }
 
+    flavorDimensions 'mode'
+    productFlavors {
+        stable {
+            dimension = 'mode'
+        }
+        snapshot {
+            dimension = 'mode'
+        }
+    }
+
 }
 
 dependencies {

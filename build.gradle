@@ -26,7 +26,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
- ext {
+
+ext {
      lifecycle = '1.1.1'
      lifecycleExtention = '2.0.0'
      arch_core = '2.0.1'

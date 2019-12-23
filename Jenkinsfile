@@ -20,10 +20,10 @@ node {
 
   stage 'Stage Archive'
   //tell Jenkins to archive the apks
-  archiveArtifacts artifacts: 'app/build/outputs/apk/*.apk', fingerprint: true
+  //archiveArtifacts artifacts: 'app/build/outputs/apk/*.apk', fingerprint: true
 
   stage 'Stage Upload To Fabric'
-  sh "./gradlew crashlyticsUploadDistribution${flavor}Debug  -PBUILD_NUMBER=${env.BUILD_NUMBER}"
+  //sh "./gradlew crashlyticsUploadDistribution${flavor}Debug  -PBUILD_NUMBER=${env.BUILD_NUMBER}"
 }
 
 // Pulls the android flavor out of the branch name the branch is prepended with /QA_

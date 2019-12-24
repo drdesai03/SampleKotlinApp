@@ -14,7 +14,7 @@ node {
   def flavor = "${env.BRANCH_NAME}"
   echo "Building flavor ${flavor}"
 
-  if(flavor == "master") {
+  if (flavor == "master") {
     sh "./gradlew clean assembleStableDebug assembleStableRelease lintStableDebug -PBUILD_NUMBER=${env.BUILD_NUMBER}"
   } else {
     sh "./gradlew clean assembleSnapshotDebug assembleSnapshotRelease lintSnapshotDebug -PBUILD_NUMBER=${env.BUILD_NUMBER}"
@@ -24,7 +24,7 @@ node {
 
   stage 'Stage Archive'
   //tell Jenkins to archive the apks
-  if(flavour == "master") {
+  if (flavor == "master") {
     archiveArtifacts artifacts: 'app/build/outputs/apk/stable/debug/*.apk', fingerprint: true
   } else {
     archiveArtifacts artifacts: 'app/build/outputs/apk/snapshot/debug/*.apk', fingerprint: true

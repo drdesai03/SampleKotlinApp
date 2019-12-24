@@ -9,7 +9,7 @@ node {
   stage 'Stage Build'
 
   //branch name from Jenkins environment variables
-  echo "My branch is: ${env.BRANCH_NAME}"
+  echo "My branch is: ${BRANCH_NAME}"
 
   def branchName = "${env.BRANCH_NAME}"
   echo "BranchName ${branchName}"
